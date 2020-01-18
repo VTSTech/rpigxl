@@ -15,7 +15,7 @@ args=( "$@" )
 echo -e "###############################################"
 echo -e "# rpigxl - RetroPie gamelist.xml Art Injector #"
 echo -e "# Written by VTSTech (www.VTS-Tech.org)       #"
-echo -e "# v0.1-alpha1 (01.18.2020)                    #"
+echo -e "# v0.1-alpha2 (01.18.2020)                    #"
 echo -e "# GitHub https://github.com/Veritas83/rpigxl  #"
 echo -e "###############################################\n\n"
 
@@ -39,7 +39,8 @@ else
 			#echo -e ${args[i]}
 			if [ ${args[i]} = "-core" ]
 			then
-				filename="/opt/retropie/configs/all/emulationstation/gamelists/"${args[i+1]}"/gamelist.xml"
+				core=${args[i+1]}
+				filename="/opt/retropie/configs/all/emulationstation/gamelists/"${core}"/gamelist.xml"
 			fi
 			if [ ${args[i]} = "-art" ]
 			then
@@ -161,4 +162,5 @@ else
 	done>gamelist.xml
 
 	echo -e "gamelist.xml created in " $PWD
+	cp -vi gamelist.xml "/opt/retropie/configs/all/emulationstation/gamelists/"${core}"/"
 fi
