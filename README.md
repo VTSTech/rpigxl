@@ -2,7 +2,7 @@
  rpigxl - RetroPie gamelist.xml Art Injector
 
 <img src="https://i.gyazo.com/d6cdb1714286205803389be5801a6b34.png">
-
+<pre>
 Usage:
 
 ./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/snes/videos/
@@ -16,3 +16,4 @@ Usage:
 -art  full path to directory with art, do not use .
 -type XML Tag to replace, Supported values: image, video
 -v    verbosity level, 1 displays found matches
+<pre>
