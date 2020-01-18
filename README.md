@@ -32,4 +32,12 @@ v0.1-alpha2
 Now copies generated gamelist.xml to the emulationstation folder when finished, prompting user to overwrite.
 Added -gen option to generate empty gamelist.xml using Skyscraper
 
+v0.1-alpha1
+
+Now supports various command line arguments.
+No longer removes gamelist.xml recurisvely
+Now supports both <image> and <video> tags
+Core specified in command line now.
+Added information about intended gamelist.xml preparation
+Added GitHub link
 </pre>
