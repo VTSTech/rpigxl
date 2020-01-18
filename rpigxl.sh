@@ -16,12 +16,11 @@ args=( "$@" )
 echo -e "###############################################"
 echo -e "# rpigxl - RetroPie gamelist.xml Art Injector #"
 echo -e "# Written by VTSTech (www.VTS-Tech.org)       #"
-echo -e "# v0.1-alpha2 (01.18.2020)                    #"
+echo -e "# v0.1-alpha3 (01.18.2020)                    #"
 echo -e "# GitHub https://github.com/Veritas83/rpigxl  #"
 echo -e "###############################################\n\n"
 
-if [ $# == 0 ]
-then
+function showusage() {
 	echo -e "Usage:\n"
 	echo -e "./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/snes/videos/\n\n"
 	echo -e "* rpigxl.sh assumes you have generated an empty gamelist.xml use -gen to do this *\n"
@@ -29,8 +28,13 @@ then
 	echo -e "-gen  Generate empty gamelist.xml using SkyScraper, Requires -core be set"
 	echo -e "-art  full path to directory with art, do not use ."
 	echo -e "-type XML Tag to replace, Supported values: image, video"
-	echo -e "-v    verbosity level, 1 displays found matches\n"
-	echo -e "Use arguments!"
+	echo -e "-v    verbosity level, 1 displays found matches use -vv for more\n"
+	echo -e "Use arguments!"	
+}
+
+if [ $# == 0 ]
+then
+	showusage
 	exit 0
 else 
 	#echo -e ${args[0]}
@@ -55,6 +59,10 @@ else
 			then
 				verbose=1
 			fi
+			if [ ${args[i]} = "-vv" ]
+			then
+				verbose=2
+			fi
 			if [ ${args[i]} = "-gen" ]
 			then
 				gen=1
@@ -67,6 +75,12 @@ else
 	echo -e "Generate:" ${gen}
 	echo -e "Verbosity:" ${verbose}
 	
+	if [ $# -le 2 ]
+	then
+		echo -e "\nERROR: rpigxl.sh requires at least 3 arguments when run correctly\n"
+		showusage
+		exit 3
+	fi
 	if [[ ${gen} == 1 ]]
 	then
 		if [[ ${#core} -gt 2 ]]
@@ -75,6 +89,7 @@ else
 			if test -f /opt/retropie/supplementary/skyscraper/Skyscraper
 			then
 				echo -e "\n* Skyscraper detected! Proceeding...\n"
+				/opt/retropie/supplementary/skyscraper/Skyscraper -p "${core}" -s import
 				/opt/retropie/supplementary/skyscraper/Skyscraper -p "${core}" --nobrackets --skipped --unattend -g /opt/retropie/configs/all/emulationstation/gamelists/"${core}"/ --nohints
 				echo -e "\n* gamelist.xml generation complete. You can rpigxl.sh without -gen now!"
 				exit 0
@@ -119,19 +134,22 @@ else
 			#echo -e "Game path detected: " $x
 			readarray -d "/" -t tmp <<< "$x"	
 			rom_filename=${tmp[6]} 
-			#video tag
+			# video tag
 			if [ "${tagtype}" = "video" ]
 			then
 				if [ "${xmlline[ (( $i+5 )) ]}" = "<video />" ]
 				then
-					#echo -e "Empty <video> tag detected!\n"
-					#echo -e "Checking ART List for match..."
+					if [[ ${verbose} -ge 2 ]]
+					then
+						echo -e "Empty <video> tag detected!"
+						echo -e "Checking ART List for match..."
+					fi
 					for y in "${artlist[@]}"
 					do
 						if [[ $y == *"${rom_filename:0:-4}"* ]]
 						then
 							artmatch=$y
-							if [[ ${verbose} == 1 ]]
+							if [[ ${verbose} -ge 1 ]]
 							then
 								echo -e "Match found!" $artmatch
 							fi								
@@ -139,18 +157,22 @@ else
 						fi
 					done
 				fi
+			# image tag
 			elif [ "${tagtype}" = "image" ]
 			then
 				if [ "${xmlline[ (( $i+3 )) ]}" = "<image />" ]
 				then
-					#echo -e "Empty <video> tag detected!\n"
-					#echo -e "Checking ART List for match..."
+					if [[ ${verbose} -ge 2 ]]
+					then
+						echo -e "Empty <image> tag detected!"
+						echo -e "Checking ART List for match..."
+					fi
 					for y in "${artlist[@]}"
 					do
 						if [[ $y == *"${rom_filename:0:-4}"* ]]
 						then
 							artmatch=$y
-							if [[ ${verbose} == 1 ]]
+							if [[ ${verbose} -ge 1 ]]
 							then
 								echo -e "Match found!" $artmatch
 							fi								
@@ -158,18 +180,22 @@ else
 						fi
 					done
 				fi
+			# cover tag
 			elif [ "${tagtype}" = "cover" ]
 			then
 				if [ "${xmlline[ (( $i+2 )) ]}" = "<cover />" ]
 				then
-					#echo -e "Empty <video> tag detected!\n"
-					#echo -e "Checking ART List for match..."
+					if [[ ${verbose} -ge 2 ]]
+					then
+						echo -e "Empty <cover> tag detected!"
+						echo -e "Checking ART List for match..."
+					fi
 					for y in "${artlist[@]}"
 					do
 						if [[ $y == *"${rom_filename:0:-4}"* ]]
 						then
 							artmatch=$y
-							if [[ ${verbose} == 1 ]]
+							if [[ ${verbose} -ge 1 ]]
 							then
 								echo -e "Match found!" $artmatch
 							fi								
