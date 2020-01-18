@@ -1,15 +1,16 @@
 #!/bin/bash
 # rpigxl - RetroPie gamelist.xml Art Injector
 # Written by VTSTech (www.VTS-Tech.org)
- 
-nes="/opt/retropie/configs/all/emulationstation/gamelists/nes/gamelist.xml"
+# GitHub https://github.com/Veritas83/rpigxl
 
 declare -a artlist
 declare -a xmlline
 declare -a tmp
 declare -a args
+
 i=0
 verbose=0
+gen=0
 args=( "$@" )
 
 echo -e "###############################################"
@@ -23,9 +24,9 @@ if [ $# == 0 ]
 then
 	echo -e "Usage:\n"
 	echo -e "./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/snes/videos/\n\n"
-	echo -e "* rpigxl.sh assumes you have run SkyScraper and generated an empty game list with your Rom Names and Filenames *"
-	echo -e "* future versions of rpigxl.sh will simply do this for you. For now do it prior to running rpigxl.sh           *\n\n"
+	echo -e "* rpigxl.sh assumes you have generated an empty gamelist.xml use -gen to do this *\n"
 	echo -e "-core specify single core, all lowercase ie: nes, snes, psx, arcade"
+	echo -e "-gen  Generate empty gamelist.xml using SkyScraper, Requires -core be set"
 	echo -e "-art  full path to directory with art, do not use ."
 	echo -e "-type XML Tag to replace, Supported values: image, video"
 	echo -e "-v    verbosity level, 1 displays found matches\n"
@@ -54,12 +55,38 @@ else
 			then
 				verbose=1
 			fi
+			if [ ${args[i]} = "-gen" ]
+			then
+				gen=1
+			fi
 			((i++))
 		done
 	echo -e "gamelist.xml:" ${filename}
 	echo -e "ART Path:" ${artpath}
 	echo -e "XML Tag:" ${tagtype}
+	echo -e "Generate:" ${gen}
 	echo -e "Verbosity:" ${verbose}
+	
+	if [[ ${gen} == 1 ]]
+	then
+		if [[ ${#core} -gt 2 ]]
+		then
+			echo -e "\n* Running in gamelist.xml Generation Mode, Checking Skyscraper existence..."
+			if test -f /opt/retropie/supplementary/skyscraper/Skyscraper
+			then
+				echo -e "\n* Skyscraper detected! Proceeding...\n"
+				/opt/retropie/supplementary/skyscraper/Skyscraper -p "${core}" --nobrackets --skipped --unattend -g /opt/retropie/configs/all/emulationstation/gamelists/"${core}"/ --nohints
+				echo -e "\n* gamelist.xml generation complete. You can rpigxl.sh without -gen now!"
+				exit 0
+			else
+				echo -e "\nERROR: Skyscraper not installed. Install Skyscraper to generate gamelist.xml"
+				exit 2
+			fi
+		else
+			echo -e "\nERROR: Cannot generate gamelist.xml without -core"
+			exit 1
+		fi
+	fi
 	echo -e "\nCreating gamelist.xml backup...\n"
 	if test -f "$filename"
 	then
@@ -163,4 +190,5 @@ else
 
 	echo -e "gamelist.xml created in " $PWD
 	cp -vi gamelist.xml "/opt/retropie/configs/all/emulationstation/gamelists/"${core}"/"
+	exit 0
 fi
