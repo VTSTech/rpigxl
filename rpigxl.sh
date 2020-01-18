@@ -22,7 +22,7 @@ echo -e "###############################################\n\n"
 if [ $# == 0 ]
 then
 	echo -e "Usage:\n"
-	echo -e "./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/nes/videos/\n\n"
+	echo -e "./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/snes/videos/\n\n"
 	echo -e "* rpigxl.sh assumes you have run SkyScraper and generated an empty game list with your Rom Names and Filenames *"
 	echo -e "* future versions of rpigxl.sh will simply do this for you. For now do it prior to running rpigxl.sh           *\n\n"
 	echo -e "-core specify single core, all lowercase ie: nes, snes, psx, arcade"

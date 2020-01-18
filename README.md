@@ -1,11 +1,11 @@
 # rpigxl
  rpigxl - RetroPie gamelist.xml Art Injector
 
-<img src="https://i.gyazo.com/6e59538659c16bc73054ae9af5229d21.png">
+<img src="https://i.gyazo.com/d6cdb1714286205803389be5801a6b34.png">
 
 Usage:
 
-./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/nes/videos/
+./rpigxl.sh -type video -core snes -art /opt/retropie/configs/all/emulationstation/downloaded_media/snes/videos/
 
 
 * rpigxl.sh assumes you have run SkyScraper and generated an empty game list with your Rom Names and Filenames *
