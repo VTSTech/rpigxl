@@ -16,7 +16,7 @@ args=( "$@" )
 echo -e "###############################################"
 echo -e "# rpigxl - RetroPie gamelist.xml Art Injector #"
 echo -e "# Written by VTSTech (www.VTS-Tech.org)       #"
-echo -e "# v0.1-alpha3 (01.18.2020)                    #"
+echo -e "# v0.1-alpha4 (01.18.2020)                    #"
 echo -e "# GitHub https://github.com/Veritas83/rpigxl  #"
 echo -e "###############################################\n\n"
 
@@ -213,7 +213,7 @@ else
 	do
 		echo "$z"
 	done>gamelist.xml
-
+	echo "</gameList>">>/opt/retropie/configs/all/emulationstation/gamelists/"${core}"/gamelist.xml
 	echo -e "gamelist.xml created in " $PWD
 	cp -vi gamelist.xml "/opt/retropie/configs/all/emulationstation/gamelists/"${core}"/"
 	exit 0
